@@ -12,6 +12,11 @@ const Login = (props) => {
           <Signin>Sign in</Signin>
         </div>
       </Nav>
+      <Section>
+        <Hero>
+          <h1>Welcome to your professional community</h1>
+        </Hero>
+      </Section>
     </Container>
   )
 };
@@ -78,5 +83,42 @@ const Signin = styled.a`
   height: 40px;
 `;
 
+const Section = styled.section`
+  display: flex;
+  align-content: flex-start;
+  min-height: 700px;
+  padding-bottom: 138px;
+  padding-top: 40px;
+  padding: 60px 0;
+  position: relative;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1128px;
+  align-items: center;
+  margin: auto;
+
+  @media (max-width: 768px) {
+    margin: auto;
+    min-height: 0;
+  }
+`;
+
+const Hero = styled.div`
+  width: 100%;
+  h1 {
+    padding-bottom: 0;
+    width: 55%;
+    font-size: 56px;
+    color: #2977c9;
+    font-weight: 200;
+    line-height: 70px;
+    @media (max-width: 768px) {
+      text-align: center;
+      width: 100%;
+      font-size: 20px;
+      line-height: 2;
+    }
+  }
+`;
 
 export default Login;
