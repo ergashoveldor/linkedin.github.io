@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import Header from "./Header";
+import Leftside from "./Leftside";
+import Main from "./Main";
+import Rightside from "./Rightside";
+
 const Home = (props) => {
   return (
     <Container>
@@ -14,9 +18,9 @@ const Home = (props) => {
         </p>
       </Section>
       <Layout>
-        <div>left side</div>
-        <div>main</div>
-        <div>right side</div>
+       <Leftside />
+       <Main />
+       <Rightside />
       </Layout>
     </Container>
   );
