@@ -201,6 +201,7 @@ const CommunityCard = styled(ArtCard)`
       padding: 12px;
       &:hover {
         background-color: rgba(0,0,0,0.08);
+        color: red;
       }
     }
   }
