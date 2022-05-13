@@ -1,11 +1,13 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { signInAPI } from "../actions";
 
 const Login = (props) => {
   return (
     <Container>
       <Nav>
-        <a href='/'>
-          <img src="/images/login-logo.svg" alt='' />
+        <a href="/">
+          <img src="/images/login-logo.svg" alt="" />
         </a>
         <div>
           <Join>Join now</Join>
@@ -18,20 +20,19 @@ const Login = (props) => {
           <img src="/images/login-hero.svg" alt="" />
         </Hero>
         <Form>
-          <Google>
+          <Google onClick={() => props.signIn()}>
             <img src="/images/google.svg" alt="" />
             Sign in with Google
           </Google>
         </Form>
       </Section>
     </Container>
-  )
+  );
 };
 
 const Container = styled.div`
   padding: 0;
 `;
-
 
 const Nav = styled.nav`
   max-width: 1128px;
@@ -63,7 +64,7 @@ const Join = styled.a`
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.08);
-    color: rgba(0,0,0,0.9);
+    color: rgba(0, 0, 0, 0.9);
     text-decoration: none;
   }
 `;
@@ -129,15 +130,15 @@ const Hero = styled.div`
   img {
     /* z-index: -1; */
     width: 700px;
-    height: 670px;   
+    height: 670px;
     position: absolute;
     bottom: -2px;
     right: -150px;
     @media (max-width: 768px) {
-        top: 230px;
-        width: initial;
-        height: initial;
-        position: initial;
+      top: 230px;
+      width: initial;
+      height: initial;
+      position: initial;
     }
   }
 `;
@@ -158,9 +159,8 @@ const Google = styled.button`
   height: 56px;
   width: 100%;
   border-radius: 28px;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 60%), 
-  inset 0 0 0 2px rgb(0 0 0 / 0%) 
-  inset 0 0 0 1px rgb(0 0 0 / 0);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 60%),
+    inset 0 0 0 2px rgb(0 0 0 / 0%) inset 0 0 0 1px rgb(0 0 0 / 0);
   vertical-align: middle;
   z-index: 0;
   transition-duration: 167ms;
@@ -172,4 +172,13 @@ const Google = styled.button`
   }
 `;
 
-export default Login;
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  signIn: () => dispatch(signInAPI()),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+// export default Login;
