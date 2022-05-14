@@ -1,6 +1,11 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import {connect} from 'react-redux';
+import { LogOutAPI } from '../actions';
+
 
 const Header = (props) => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Content>
@@ -52,12 +57,14 @@ const Header = (props) => {
 
             <User>
               <a href="">
-                <img src="/images/user.svg" alt="" />
-                <span>Me</span>
-                <img src="/images/down-icon.svg" alt="" />
+                {props.user && props.user.photoURL ? 
+                <img src={props.user.photoURL}/> : 
+                <img src="/images/user.svg" alt="" />}
+                <span>
+                  Me
+                </span>
               </a>
-
-              <SignOut><a href="">Sign Out</a></SignOut>
+              <button onClick={() => props.LogOut(navigate)}>Sign Out</button>
             </User>
 
             <Work>
@@ -212,21 +219,6 @@ const NavList = styled.li`
   }
 `;
 
-
-const SignOut = styled.div`
-  position: absolute;
-  top: 45px;
-  background-color: #fff;
-  border-radius: 0 0 5px 5px;
-  width: 100px;
-  height: 40px; 
-  font-size: 16px;
-  transition-duration: 167ms;
-  text-align: center;
-  
-  display: none;
-`;
-
 const User = styled(NavList)`
   a > svg {
     width: 24px;
@@ -250,12 +242,24 @@ const User = styled(NavList)`
     align-items: center;
   }
 
-  &:hover {
-    ${SignOut} {
-      display: flex;
+  
+  button {
+      background-color: transparent;
+      color: rgba(0, 0, 0, 0.6);
+      border: none;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.6);
+      padding: 16px;
       align-items: center;
       justify-content: center;
-    }
+      border-radius: 15px;
+      box-sizing: border-box;
+      font-weight: 600;
+      display: inline-flex;
+      max-height: 32px;
+      max-width: 480px;
+      text-align: center;
+      outline: none;
+      cursor: pointer;
   }
 `;
 
@@ -264,4 +268,15 @@ const Work = styled(User)`
 `;
 
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userState.user,
+  };
+};  
+
+const mapDispatchToProps = (dispatch) => ({
+    LogOut: (navigate) => dispatch(LogOutAPI(navigate)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
+

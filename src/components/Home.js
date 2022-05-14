@@ -1,22 +1,20 @@
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { LogOutAPI } from '../actions';
 import Header from './Header';
 import Leftside from './Leftside';
 import Main from './Main';
 import Rightside from './Rightside';
+import { useNavigate } from 'react-router-dom';
 
 const Home = (props) => {
   const navigate = useNavigate();
-
+  
   return (
     <Container>
+      
       <Header />
       <Section>
-        {/* test uchun */}
-        <button onClick={() => props.LogOut(navigate)}>Chiqish</button>
-        {/* test uchun */}
         <h5>
           <a>Hiring in a hurry? - </a>
         </h5>
@@ -87,7 +85,9 @@ const Layout = styled.div`
   }
 `;
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    user: state.userState.user,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
