@@ -1,14 +1,22 @@
-import styled from "styled-components";
-import Header from "./Header";
-import Leftside from "./Leftside";
-import Main from "./Main";
-import Rightside from "./Rightside";
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { LogOutAPI } from '../actions';
+import Header from './Header';
+import Leftside from './Leftside';
+import Main from './Main';
+import Rightside from './Rightside';
 
 const Home = (props) => {
+  const navigate = useNavigate();
+
   return (
     <Container>
       <Header />
       <Section>
+        {/* test uchun */}
+        <button onClick={() => props.LogOut(navigate)}>Chiqish</button>
+        {/* test uchun */}
         <h5>
           <a>Hiring in a hurry? - </a>
         </h5>
@@ -18,9 +26,9 @@ const Home = (props) => {
         </p>
       </Section>
       <Layout>
-       <Leftside />
-       <Main />
-       <Rightside />
+        <Leftside />
+        <Main />
+        <Rightside />
       </Layout>
     </Container>
   );
@@ -66,17 +74,24 @@ const Section = styled.section`
 
 const Layout = styled.div`
   display: grid;
-  grid-template-areas: "leftside main rightside";
+  grid-template-areas: 'leftside main rightside';
   grid-template-columns: minmax(0, 5fr) minmax(0, 12fr) minmax(300px, 7fr);
   column-gap: 25px;
   row-gap: 25px;
   grid-template-rows: auto;
-  margin: 25px 0; 
+  margin: 25px 0;
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
     padding: 0 5px;
   }
 `;
+const mapStateToProps = (state) => {
+  return {};
+};
 
-export default Home;
+const mapDispatchToProps = (dispatch) => ({
+  LogOut: (navigate) => dispatch(LogOutAPI(navigate)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
