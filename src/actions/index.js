@@ -1,5 +1,5 @@
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../firebase";
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../firebase';
 
 export function signInAPI() {
   return (dispatch) => {
