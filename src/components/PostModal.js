@@ -16,6 +16,16 @@ const PostModal = (props) => {
             <span>Name</span>
           </UserInfo>
         </SharedContent>
+        <ShareCreation>
+          <AttachAssets>
+            <AssetButton>
+              <img src="/images/share-image.svg" alt="" />
+            </AssetButton>
+            <AssetButton>
+              <img src="/images/share-video.svg" alt="" />
+            </AssetButton>
+          </AttachAssets>
+        </ShareCreation>
       </Content>
     </Container>
   )
@@ -97,5 +107,25 @@ const UserInfo = styled.div`
     margin-left: 5px;
   }
 `;
+
+const ShareCreation = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 24px 12px 16px;
+`;
+
+const AssetButton = styled.button`
+  display: flex;
+  align-items: center;
+  height: 40px;
+  min-width: auto;
+  color: rgba(0,0,0,0.5);
+`;
+
+const AttachAssets = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 
 export default PostModal;
