@@ -1,12 +1,23 @@
-import styled from 'styled-components';
+import { useState } from "react";
+import styled from "styled-components";
 
 const PostModal = (props) => {
+  const [editorText, setEditorText] = useState("");
+
+  const reset = (e) => {
+    setEditorText("");
+    props.handleClick(e);
+  }
+
   return (
+    <>
+    {
+      props.showModal === 'open' && 
     <Container>
       <Content>
         <Header>
           <h2>Create a post</h2>
-          <button>
+          <button onClick={(event) => reset(event)}>
             <img src="/images/close-icon.svg" alt="" />
           </button>
         </Header>
@@ -15,6 +26,14 @@ const PostModal = (props) => {
             <img src="/images/user.svg" alt="" />
             <span>Name</span>
           </UserInfo>
+         <Editor>
+            <textarea
+            value={editorText}
+            onChange={(e) => setEditorText(e.target.value)}
+            placeholder="What do you want to talk about?"
+            autoFocus = {true}
+          ></textarea>
+         </Editor>
         </SharedContent>
         <ShareCreation>
           <AttachAssets>
@@ -25,11 +44,22 @@ const PostModal = (props) => {
               <img src="/images/share-video.svg" alt="" />
             </AssetButton>
           </AttachAssets>
+          <ShareComment>
+            <AssetButton>
+              <img src="/images/share-comment.svg" alt="" />
+              Anyone
+            </AssetButton>
+          </ShareComment>
+
+          <PostButton disabled={!editorText ? true : false}>Post</PostButton>
         </ShareCreation>
       </Content>
     </Container>
-  )
-}
+
+    }
+    </>
+  );
+};
 
 const Container = styled.div`
   position: fixed;
@@ -39,7 +69,8 @@ const Container = styled.div`
   bottom: 0;
   z-index: 9999;
   color: black;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0, 0, 0, 0.7);
+  animation: fadeIn 0.3s;
 `;
 
 const Content = styled.div`
@@ -59,10 +90,10 @@ const Content = styled.div`
 const Header = styled.div`
   display: block;
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(0,0,0,0.15);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   font-size: 16px;
   line-height: 1.5;
-  color: rgba(0,0,0,0.6);
+  color: rgba(0, 0, 0, 0.6);
   font-weight: 400;
   display: flex;
   justify-content: space-between;
@@ -71,8 +102,9 @@ const Header = styled.div`
     width: 40px;
     height: 40px;
     min-width: auto;
-    color: rgba(0,0,0,0.15);
-    svg {
+    color: rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    svg, img {
       pointer-events: none;
     }
   }
@@ -92,7 +124,8 @@ const UserInfo = styled.div`
   display: flex;
   align-items: center;
   padding: 12px 24px;
-  svg, img {
+  svg,
+  img {
     width: 48px;
     height: 48px;
     background-clip: content-box;
@@ -119,13 +152,59 @@ const AssetButton = styled.button`
   align-items: center;
   height: 40px;
   min-width: auto;
-  color: rgba(0,0,0,0.5);
+  color: rgba(0, 0, 0, 0.5);
 `;
 
 const AttachAssets = styled.div`
   display: flex;
   align-items: center;
+  padding-right: 8px;
+  ${AssetButton} {
+    width: 40px;
+  }
 `;
 
+const ShareComment = styled.div`
+  padding-left: 8px;
+  margin-right: auto;
+  border-left: 1px solid rgba(0, 0, 0, 0.15);
+  ${AssetButton} {
+    svg {
+      margin-right: 5px;
+    }
+  }
+`;
+
+const PostButton = styled.button`
+  min-width: 60px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 20px;
+  background: ${(props) => (props.disabled ? "rgba(0,0,0,0.8)" : "#006ac2")};
+  border: none;
+  outline: none;
+  color: ${(props) => (props.disabled ? "rgba(1,1,1,0.2)" : "white")};
+  &:hover {
+    background: #004182;
+    cursor: pointer;
+  }
+`;
+
+const Editor = styled.div`
+  padding: 12px 24px;
+  textarea {
+    width: 100%;
+    min-height: 100px;
+    resize: none;
+    outline: none;
+  }
+  input {
+    width: 100%;
+    height: 35px;
+    font-size: 16px;
+    outline: none;
+    margin-bottom: 20px;
+  }
+`;
 
 export default PostModal;
