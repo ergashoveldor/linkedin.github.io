@@ -1,22 +1,21 @@
-import { useState } from "react";
-import styled from "styled-components";
-import ReactPlayer from "react-player";
-import { connect } from "react-redux";
-import firebase from "firebase/compat/app";
-import { postArticleAPI } from "../actions";
-
+import { useState } from 'react';
+import styled from 'styled-components';
+import ReactPlayer from 'react-player';
+import { connect } from 'react-redux';
+import firebase from 'firebase/compat/app';
+import { postArticleAPI } from '../actions';
+import { Timestamp } from 'firebase/firestore';
 
 const PostModal = (props) => {
-  const [editorText, setEditorText] = useState("");
-  const [shareImage, setShareImage] = useState("");
-  const [videoLink, setVideoLink] = useState("");
-  const [assetArea, setAssetArea] = useState("");
-
+  const [editorText, setEditorText] = useState('');
+  const [shareImage, setShareImage] = useState('');
+  const [videoLink, setVideoLink] = useState('');
+  const [assetArea, setAssetArea] = useState('');
 
   const handleChange = (e) => {
     const image = e.target.files[0];
 
-    if (image === "" || image === undefined) {
+    if (image === '' || image === undefined) {
       alert(`not an image, the file is a ${typeof image}`);
       return;
     }
@@ -24,16 +23,16 @@ const PostModal = (props) => {
   };
 
   const switchAssetArea = (area) => {
-    setShareImage("");
+    setShareImage('');
     setVideoLink('');
     setAssetArea(area);
-  }
+  };
 
   const postArticle = (e) => {
-    console.log("tugadi")
     e.preventDefault();
-    if(e.target !== e.currentTarget) {
-      console.log("hello")
+    console.log('tugadi');
+    if (e.target !== e.currentTarget) {
+      console.log('hello');
       return;
     }
 
@@ -42,24 +41,24 @@ const PostModal = (props) => {
       video: videoLink,
       user: props.user,
       description: editorText,
-      timestamp: firebase.firestore.Timestamp.now(),
+      timestamp: Timestamp.fromDate(new Date()),
     };
 
     props.postArticle(payload);
     reset(e);
-  }
+  };
 
   const reset = (e) => {
-    setEditorText("");
-     setShareImage("");
-     setVideoLink("");
-     setAssetArea("");
+    setEditorText('');
+    setShareImage('');
+    setVideoLink('');
+    setAssetArea('');
     props.handleClick(e);
   };
 
   return (
     <>
-      {props.showModal === "open" && (
+      {props.showModal === 'open' && (
         <Container>
           <Content>
             <Header>
@@ -85,14 +84,14 @@ const PostModal = (props) => {
                   placeholder="What do you want to talk about?"
                   autoFocus={true}
                 />
-                {assetArea === "image" ? (
+                {assetArea === 'image' ? (
                   <UploadImage>
                     <input
                       type="file"
                       accept="image/gif, image/jpeg, image/png, image/jpg"
                       name="image"
                       id="file"
-                      style={{ display: "none" }}
+                      style={{ display: 'none' }}
                       onChange={handleChange}
                     />
                     <p>
@@ -103,7 +102,7 @@ const PostModal = (props) => {
                     )}
                   </UploadImage>
                 ) : (
-                  assetArea === "media" && (
+                  assetArea === 'media' && (
                     <>
                       <input
                         type="text"
@@ -112,7 +111,7 @@ const PostModal = (props) => {
                         onChange={(e) => setVideoLink(e.target.value)}
                       />
                       {videoLink && (
-                        <ReactPlayer width={"100%"} url={videoLink} />
+                        <ReactPlayer width={'100%'} url={videoLink} />
                       )}
                     </>
                   )
@@ -121,10 +120,10 @@ const PostModal = (props) => {
             </SharedContent>
             <ShareCreation>
               <AttachAssets>
-                <AssetButton onClick={() => switchAssetArea("image")}>
+                <AssetButton onClick={() => switchAssetArea('image')}>
                   <img src="/images/share-image.svg" alt="" />
                 </AssetButton>
-                <AssetButton onClick={() => switchAssetArea("media")}>
+                <AssetButton onClick={() => switchAssetArea('media')}>
                   <img src="/images/share-video.svg" alt="" />
                 </AssetButton>
               </AttachAssets>
@@ -135,7 +134,10 @@ const PostModal = (props) => {
                 </AssetButton>
               </ShareComment>
 
-              <PostButton disabled={!editorText ? true : false} onClick={(event) => postArticle(event)}>
+              <PostButton
+                // disabled={!editorText ? true : false}
+                onClick={(event) => postArticle(event)}
+              >
                 Post
               </PostButton>
             </ShareCreation>
@@ -266,12 +268,12 @@ const PostButton = styled.button`
   padding-left: 16px;
   padding-right: 16px;
   border-radius: 20px;
-  background: ${(props) => (props.disabled ? "rgba(0,0,0,0.8)" : "#006ac2")};
+  background: ${(props) => (props.disabled ? 'rgba(0,0,0,0.8)' : '#006ac2')};
   border: none;
   outline: none;
-  color: ${(props) => (props.disabled ? "rgba(1,1,1,0.2)" : "white")};
+  color: ${(props) => (props.disabled ? 'rgba(1,1,1,0.2)' : 'white')};
   &:hover {
-    background: ${(props) => (props.disabled ? "rgba(0,0,0,0.08)" : "#004182")};
+    background: ${(props) => (props.disabled ? 'rgba(0,0,0,0.08)' : '#004182')};
     cursor: pointer;
   }
 `;
@@ -306,10 +308,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-
 const mapDispatchToProps = (dispatch) => ({
-  postArticle: (payload) => dispatch(postArticleAPI(payload))
+  postArticle: (payload) => dispatch(postArticleAPI(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostModal);
-
