@@ -1,12 +1,18 @@
 // eslint-disable-next-line
 import { signInWithPopup, signOut } from 'firebase/auth';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  setDoc,
+  Timestamp,
+} from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, provider, storage } from '../firebase';
 import { db } from '../firebase';
 import { SET_USER, SET_LOADING_STATUS, GET_ARTICLES } from './actionType';
-
-
 
 export const setUser = (payload) => ({
   type: SET_USER,
@@ -15,15 +21,13 @@ export const setUser = (payload) => ({
 
 export const setLoading = (status) => ({
   type: SET_LOADING_STATUS,
-  status: status
+  status: status,
 });
 
 export const getArticles = (payload) => ({
   type: GET_ARTICLES,
   payload: payload,
-})
-
-
+});
 
 export function signInAPI(navigate) {
   return (dispatch) => {
@@ -74,7 +78,7 @@ export function signOutAPI() {
 
 export function postArticleAPI(payload) {
   return async (dispatch) => {
-    dispatch(setLoading(true))
+    dispatch(setLoading(true));
     console.log(payload);
     if (payload.image !== '') {
       let url = '';
@@ -103,37 +107,6 @@ export function postArticleAPI(payload) {
       });
       dispatch(setLoading(false));
       console.log('url', url);
-      // const upload = storage
-      //   .ref(`images/${payload.image.name}`)
-      //   .put(payload.image);
-      // upload.on(
-      //   'state_changed',
-      //   (snapshot) => {
-      //     const progress =
-      //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      //     console.log(`Progress: ${progress}%`);
-      //     if (snapshot.state === 'RUNNING') {
-      //       console.log(`Progress: ${progress}%`);
-      //     }
-      //   },
-      //   (error) => console.log(error.code),
-      //   // eslint-disable-next-line
-      //   async () => {
-      //     const downloadURL = await upload.snapshot.ref.getDownloadURL();
-      //     db.collection('articles').add({
-      //       actor: {
-      //         description: payload.user.email,
-      //         title: payload.user.displayName,
-      //         date: payload.timestamp,
-      //         image: payload.user.photoURL,
-      //       },
-      //       video: payload.video,
-      //       sharedImg: downloadURL,
-      //       comments: 0,
-      //       description: payload.description,
-      //     });
-      //   }
-      // );
     } else if (payload.video) {
       await setDoc(doc(db, 'posts', `${payload?.user?.uid + Date.now()}`), {
         actor: {
@@ -144,41 +117,25 @@ export function postArticleAPI(payload) {
         },
         video: payload.video,
         sharedImg: '',
-        comments: 0, 
+        comments: 0,
         description: payload.description,
         createdAt: Timestamp.fromDate(new Date()),
       });
       dispatch(setLoading(false));
-
-      // db.collection('articles').add({
-      //   actor: {
-      //     description: payload.user.email,
-      //     title: payload.user.displayName,
-      //     date: payload.timestamp,
-      //     image: payload.user.photoURL,
-      //   },
-      //   video: payload.video,
-      //   sharedImg: '',
-      //   comments: 0,
-      //   description: payload.description,
-      // });
     }
   };
 }
 
+export function getArticlesAPI(setState) {
+  return async (dispatch) => {
+    let payload = [];
+    const q = query(collection(db, 'posts'), orderBy('actor.date', 'desc'));
+    const querySnapshot = await getDocs(q);
 
-
-
-export function getArticlesAPI() {
-  return (dispatch) => {
-    let payload;
-    db.collection("articles")
-      .orderBy("actor.date", "desc")
-      .onSnapshot((snapshot) => {
-        payload = snapshot.docs.map((doc) => doc.data());
-        dispatch(getArticles(payload))
-      });
+    querySnapshot?.forEach((doc) => {
+      payload.unshift(doc?.data());
+      dispatch(getArticles(payload));
+      setState(payload);
+    });
   };
 }
-
-
