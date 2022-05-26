@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
 import { connect } from 'react-redux';
+// eslint-disable-next-line
 import firebase from 'firebase/compat/app';
 import { postArticleAPI } from '../actions';
 import { Timestamp } from 'firebase/firestore';
