@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import PostModal from './PostModal';
 import { getArticlesAPI } from '../actions';
 import { connect } from 'react-redux';
+import dayjs from 'dayjs';
+import ReactPlayer from 'react-player';
 
 const Main = (props) => {
   const [showModal, setShowModal] = useState('close');
@@ -13,17 +15,17 @@ const Main = (props) => {
 
   useEffect(() => {
     props.getArticles(setPost);
-  }, []);
+  }, [showModal]);
 
   const handleClick = (e) => {
     e.preventDefault();
     if (e.target !== e.currentTarget) {
       return;
     }
-
     switch (showModal) {
       case 'open':
         setShowModal('close');
+        window.location.reload(false);
         break;
       case 'close':
         setShowModal('open');
@@ -64,65 +66,81 @@ const Main = (props) => {
               </button>
             </div>
           </ShareBox>
-          <div>
-            <Article>
-              <SharedActor>
-                <a>
-                  <img src="/images/user.svg" alt="" />
-                  <div>
-                    <span>Title</span>
-                    <span>Info</span>
-                    <span>Date</span>
-                  </div>
-                </a>
-                <button>
-                  <img src="/images/ellipsis.svg" alt="" />
-                </button>
-              </SharedActor>
-              <Description>Description</Description>
-              <SharedImg>
-                <a>
-                  <img src="/images/shared-image.jpg" alt="" />
-                </a>
-              </SharedImg>
-              <SocialCounts>
-                <li>
-                  <button>
-                    <img
-                      src="https://static-exp1.licdn.com/sc/h/d310t2g24pvdy4pt1jkedo4yb"
-                      alt=""
-                    />
-                    <img
-                      src="https://static-exp1.licdn.com/sc/h/b1dl5jk88euc7e9ri50xy5qo8"
-                      alt=""
-                    />
-                    <span>75</span>
-                  </button>
-                </li>
-                <li>
-                  <a>2 comments</a>
-                </li>
-              </SocialCounts>
-              <SocialActions>
-                <button>
-                  <img src="/images/like-icon.svg" alt="" />
-                  <span>Like</span>
-                </button>
-                <button>
-                  <img src="/images/comments-icon.svg" alt="" />
-                  <span>Comments</span>
-                </button>
-                <button>
-                  <img src="/images/share-icon.svg" alt="" />
-                  <span>Share</span>
-                </button>
-                <button>
-                  <img src="/images/send-icon.svg" alt="" />
-                  <span>Send</span>
-                </button>
-              </SocialActions>
-            </Article>
-          </div>
+          {post?.length > 0 ? (
+            post?.map((item, key) => (
+              <div key={key}>
+                <Article>
+                  <SharedActor>
+                    <a>
+                      <img src={item?.actor?.image} alt={item?.actor?.title} />
+                      <div>
+                        <span>{item?.actor?.title}</span>
+                        <span>{item?.actor?.description}</span>
+                        <span>
+                          {dayjs(item?.createdAt?.nanoseconds).format('HH:MM')}
+                        </span>
+                      </div>
+                    </a>
+                    <button>
+                      <img src="/images/ellipsis.svg" alt="" />
+                    </button>
+                  </SharedActor>
+                  <Description>
+                    {item?.description ? item?.description : 'no description'}
+                  </Description>
+                  {item?.sharedImg?.length > 0 && (
+                    <SharedImg>
+                      <a>
+                        <img src={item?.sharedImg} alt="" />
+                      </a>
+                    </SharedImg>
+                  )}
+                  {item?.video?.length > 0 && (
+                    <ReactPlayer width={'100%'} url={item?.video} />
+                  )}
+
+                  <SocialCounts>
+                    <li>
+                      <button>
+                        <img
+                          src="https://static-exp1.licdn.com/sc/h/d310t2g24pvdy4pt1jkedo4yb"
+                          alt=""
+                        />
+                        <img
+                          src="https://static-exp1.licdn.com/sc/h/b1dl5jk88euc7e9ri50xy5qo8"
+                          alt=""
+                        />
+                        <span>75</span>
+                      </button>
+                    </li>
+                    <li>
+                      <a>2 comments</a>
+                    </li>
+                  </SocialCounts>
+                  <SocialActions>
+                    <button>
+                      <img src="/images/like-icon.svg" alt="" />
+                      <span>Like</span>
+                    </button>
+                    <button>
+                      <img src="/images/comments-icon.svg" alt="" />
+                      <span>Comments</span>
+                    </button>
+                    <button>
+                      <img src="/images/share-icon.svg" alt="" />
+                      <span>Share</span>
+                    </button>
+                    <button>
+                      <img src="/images/send-icon.svg" alt="" />
+                      <span>Send</span>
+                    </button>
+                  </SocialActions>
+                </Article>
+              </div>
+            ))
+          ) : (
+            <p>There are no articles</p>
+          )}
           <PostModal showModal={showModal} handleClick={handleClick} />
         </Container>
       )}
