@@ -25,7 +25,6 @@ const Main = (props) => {
     switch (showModal) {
       case 'open':
         setShowModal('close');
-        window.location.reload(false);
         break;
       case 'close':
         setShowModal('open');

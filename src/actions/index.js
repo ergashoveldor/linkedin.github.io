@@ -122,6 +122,7 @@ export function postArticleAPI(payload) {
         createdAt: Timestamp.fromDate(new Date()),
       });
       dispatch(setLoading(false));
+      window.location.reload(false);
     }
   };
 }
