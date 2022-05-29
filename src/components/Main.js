@@ -13,8 +13,8 @@ const Main = (props) => {
   console.log(post, "bu postlar ro'yhati");
 
   useEffect(() => {
-    props.getArticles(setPost);
-  }, []);
+    // eslint-disable-next-line
+    props.getArticles(setPost);  }, []);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -71,12 +71,14 @@ const Main = (props) => {
               <div>
                 <Article key={key}>
                   <SharedActor>
-                    <a>
+                    <a href="#/">
                       <img src={article.actor.image} alt="" />
                       <div>
                         <span>{article.actor.title}</span>
                         <span>{article.actor.description}</span>
-                        <span>{article.actor.date.toDate().toLocaleDateString()}</span>
+                        <span>
+                          {article.actor.date.toDate().toLocaleDateString()}
+                        </span>
                       </div>
                     </a>
                     <button>
@@ -85,12 +87,12 @@ const Main = (props) => {
                   </SharedActor>
                   <Description>{article.description}</Description>
                   <SharedImg>
-                    <a>
-                     {
-                       !article.sharedImg && article.video ? <ReactPlayer width={'100%'} url={article.video} /> : (
-                         article.sharedImg && <img src={article.sharedImg}/>  
-                       )
-                     }
+                    <a href='#/'>
+                      {!article.sharedImg && article.video ? (
+                        <ReactPlayer width={"100%"} url={article.video} />
+                      ) : (
+                        article.sharedImg && <img src={article.sharedImg} alt="" />
+                      )}
                     </a>
                   </SharedImg>
                   <SocialCounts>
@@ -108,7 +110,7 @@ const Main = (props) => {
                       </button>
                     </li>
                     <li>
-                      <a>{article.comments}</a>
+                      <a href='#/'>{article.comments}</a>
                     </li>
                   </SocialCounts>
                   <SocialActions>

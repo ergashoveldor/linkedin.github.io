@@ -71,7 +71,7 @@ const PostModal = (props) => {
             <SharedContent>
               <UserInfo>
                 {props.user.photoURL ? (
-                  <img src={props.user.photoURL} />
+                  <img src={props.user.photoURL} alt=""/>
                 ) : (
                   <img src="/images/user.svg" alt="" />
                 )}
@@ -99,7 +99,7 @@ const PostModal = (props) => {
                       <label htmlFor="file">Select an image to share</label>
                     </p>
                     {shareImage && (
-                      <img src={URL.createObjectURL(shareImage)} />
+                      <img src={URL.createObjectURL(shareImage)} alt=""/>
                     )}
                   </UploadImage>
                 ) : (

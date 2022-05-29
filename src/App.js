@@ -8,8 +8,8 @@ import {connect} from 'react-redux';
 
 function App(props) {
   useEffect(() => {
-    props.getUserAuth();
-  }, []);
+    // eslint-disable-next-line 
+    props.getUserAuth();}, []);
   return (
     <div className="App">
       <Router>

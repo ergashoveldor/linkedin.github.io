@@ -16,7 +16,7 @@ const Header = (props) => {
         </Logo>
         <Search>
           <div>
-            <input type="text" placeholder='Search' />
+            <input type="text" placeholder="Search" />
           </div>
           <SearchIcon>
             <img src="/images/search-icon.svg" alt="" />
@@ -24,54 +24,57 @@ const Header = (props) => {
         </Search>
         <Nav>
           <NavListWrap>
-            <NavList className='active'>
-              <a href="">
+            <NavList className="active">
+              <a href="#/">
                 <img src="/images/nav-home.svg" alt="" />
                 <span>Home</span>
               </a>
             </NavList>
             <NavList>
-              <a href="">
+              <a href="#/">
                 <img src="/images/nav-network.svg" alt="" />
                 <span>My Network</span>
               </a>
             </NavList>
             <NavList>
-              <a href="">
+              <a href="#/">
                 <img src="/images/nav-jobs.svg" alt="" />
                 <span>Jobs</span>
               </a>
             </NavList>
             <NavList>
-              <a href="">
+              <a href="#/">
                 <img src="/images/nav-messaging.svg" alt="" />
                 <span>Messaging</span>
               </a>
             </NavList>
             <NavList>
-              <a href="">
+              <a href="#/">
                 <img src="/images/nav-notifications.svg" alt="" />
                 <span>Notifications</span>
               </a>
             </NavList>
 
             <User>
-              <a href="">
-                {props.user && props.user.photoURL ? 
-                <img src={props.user.photoURL}/> : 
-                <img src="/images/user.svg" alt="" />}
-                <span>
-                  Me
-                </span>
+              <a href="#/">
+                {props.user && props.user.photoURL ? (
+                  <img src={props.user.photoURL} alt="" />
+                ) : (
+                  <img src="/images/user.svg" alt="" />
+                )}
+                <span>Me</span>
               </a>
               <button onClick={() => props.LogOut(navigate)}>Sign Out</button>
             </User>
 
             <Work>
-              <a href="
-              ">
+              <a
+                href="#/
+              "
+              >
                 <img src="/images/nav-work.svg" alt="" />
-                <span>Work
+                <span>
+                  Work
                   <img src="/images/down-icon.svg" alt="" />
                 </span>
               </a>
@@ -79,10 +82,8 @@ const Header = (props) => {
           </NavListWrap>
         </Nav>
       </Content>
-
-
     </Container>
-  )
+  );
 };
 
 const Container = styled.div`

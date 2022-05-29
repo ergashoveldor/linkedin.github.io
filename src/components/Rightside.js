@@ -11,7 +11,7 @@ const Rightside = (props) => {
 
         <FeedList>
           <li>
-            <a>
+            <a href="#/">
               <Avatar />
             </a>
             <div>
@@ -20,7 +20,7 @@ const Rightside = (props) => {
             </div>
           </li>
           <li>
-            <a>
+            <a href="#/">
               <Avatar />
             </a>
             <div>
@@ -35,10 +35,7 @@ const Rightside = (props) => {
         </Recommendation>
       </FollowCard>
       <BannerCard>
-        <img
-          src="/images/jobs-add.jpg"
-          alt=""
-        />
+        <img src="/images/jobs-add.jpg" alt="" />
       </BannerCard>
     </Container>
   );

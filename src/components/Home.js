@@ -5,10 +5,10 @@ import Header from './Header';
 import Leftside from './Leftside';
 import Main from './Main';
 import Rightside from './Rightside';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const Home = (props) => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   
   return (
     <Container>
@@ -16,7 +16,7 @@ const Home = (props) => {
       <Header />
       <Section>
         <h5>
-          <a>Hiring in a hurry? - </a>
+          <a href='#/'>Hiring in a hurry? - </a>
         </h5>
         <p>
           Find talanted pros in record time with Upwork and keep business
