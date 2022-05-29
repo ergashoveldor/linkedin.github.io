@@ -5,10 +5,11 @@ import Header from './Header';
 import Leftside from './Leftside';
 import Main from './Main';
 import Rightside from './Rightside';
-// import { useNavigate } from 'react-router-dom';
+ import { useNavigate } from 'react-router-dom';
 
 const Home = (props) => {
-  //const navigate = useNavigate();
+  // eslint-disable-next-line
+  const navigate = useNavigate();
   
   return (
     <Container>
