@@ -1,20 +1,21 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
-import styled from 'styled-components';
-import PostModal from './PostModal';
-import { getArticlesAPI } from '../actions';
-import { connect } from 'react-redux';
-import ReactPlayer from 'react-player';
+import { useEffect } from "react";
+import { useState } from "react";
+import styled from "styled-components";
+import PostModal from "./PostModal";
+import { getArticlesAPI } from "../actions";
+import { connect } from "react-redux";
+import ReactPlayer from "react-player";
 
 const Main = (props) => {
-  const [showModal, setShowModal] = useState('close');
+  const [showModal, setShowModal] = useState("close");
   const [post, setPost] = useState([]);
 
   console.log(post, "bu postlar ro'yhati");
 
   useEffect(() => {
     // eslint-disable-next-line
-    props.getArticles(setPost);  }, []);
+    props.getArticles(setPost);
+  }, []);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -23,14 +24,14 @@ const Main = (props) => {
     }
 
     switch (showModal) {
-      case 'open':
-        setShowModal('close');
+      case "open":
+        setShowModal("close");
         break;
-      case 'close':
-        setShowModal('open');
+      case "close":
+        setShowModal("open");
         break;
       default:
-        setShowModal('close');
+        setShowModal("close");
         break;
     }
   };
@@ -87,11 +88,13 @@ const Main = (props) => {
                   </SharedActor>
                   <Description>{article.description}</Description>
                   <SharedImg>
-                    <a href='#/'>
+                    <a href="#/">
                       {!article.sharedImg && article.video ? (
                         <ReactPlayer width={"100%"} url={article.video} />
                       ) : (
-                        article.sharedImg && <img src={article.sharedImg} alt="" />
+                        article.sharedImg && (
+                          <img src={article.sharedImg} alt="" />
+                        )
                       )}
                     </a>
                   </SharedImg>
@@ -110,7 +113,7 @@ const Main = (props) => {
                       </button>
                     </li>
                     <li>
-                      <a href='#/'>{article.comments}</a>
+                      <a href="#/">{article.comments}</a>
                     </li>
                   </SocialCounts>
                   <SocialActions>

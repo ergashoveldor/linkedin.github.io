@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { signInWithPopup, signOut } from 'firebase/auth';
+import { signInWithPopup, signOut } from "firebase/auth";
 import {
   collection,
   doc,
@@ -8,11 +8,11 @@ import {
   query,
   setDoc,
   Timestamp,
-} from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { auth, provider, storage } from '../firebase';
-import { db } from '../firebase';
-import { SET_USER, SET_LOADING_STATUS, GET_ARTICLES } from './actionType';
+} from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { auth, provider, storage } from "../firebase";
+import { db } from "../firebase";
+import { SET_USER, SET_LOADING_STATUS, GET_ARTICLES } from "./actionType";
 
 export const setUser = (payload) => ({
   type: SET_USER,
@@ -35,7 +35,7 @@ export function signInAPI(navigate) {
       .then((payload) => {
         dispatch(setUser(payload.user));
         console.log(payload);
-        navigate('/home');
+        navigate("/home");
       })
       .catch((error) => alert(error.message));
   };
@@ -45,7 +45,7 @@ export function LogOutAPI(navigate) {
   return (dispatch) => {
     signOut(auth)
       .then(() => {
-        navigate('/');
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -80,8 +80,8 @@ export function postArticleAPI(payload) {
   return async (dispatch) => {
     dispatch(setLoading(true));
     console.log(payload);
-    if (payload.image !== '') {
-      let url = '';
+    if (payload.image !== "") {
+      let url = "";
       const file = payload?.image;
 
       const storageRef = ref(
@@ -92,7 +92,7 @@ export function postArticleAPI(payload) {
       const urlPic = await uploadBytes(storageRef, file);
       url = await getDownloadURL(ref(storage, urlPic?.ref?.fullPath));
 
-      await setDoc(doc(db, 'posts', `${payload?.user?.uid + Date.now()}`), {
+      await setDoc(doc(db, "posts", `${payload?.user?.uid + Date.now()}`), {
         actor: {
           description: payload?.user?.email,
           title: payload?.user?.displayName,
@@ -106,9 +106,9 @@ export function postArticleAPI(payload) {
         createdAt: Timestamp.fromDate(new Date()),
       });
       dispatch(setLoading(false));
-      console.log('url', url);
-    } else if (payload.video) {
-      await setDoc(doc(db, 'posts', `${payload?.user?.uid + Date.now()}`), {
+      console.log("url", url);
+    } else {
+      await setDoc(doc(db, "posts", `${payload?.user?.uid + Date.now()}`), {
         actor: {
           description: payload.user.email,
           title: payload.user.displayName,
@@ -116,7 +116,7 @@ export function postArticleAPI(payload) {
           image: payload.user.photoURL,
         },
         video: payload.video,
-        sharedImg: '',
+        sharedImg: "",
         comments: 0,
         description: payload.description,
         createdAt: Timestamp.fromDate(new Date()),
@@ -129,13 +129,17 @@ export function postArticleAPI(payload) {
 export function getArticlesAPI(setState) {
   return async (dispatch) => {
     let payload = [];
-    const q = query(collection(db, 'posts'), orderBy('actor.date', 'desc'));
-    const querySnapshot = await getDocs(q);
+    const q = query(collection(db, "posts"), orderBy("actor.date", "desc"));
+    try {
+      const querySnapshot = await getDocs(q);
 
-    querySnapshot?.forEach((doc) => {
-      payload.unshift(doc?.data());
-      dispatch(getArticles(payload));
-      setState(payload);
-    });
+      querySnapshot?.forEach((doc) => {
+        payload.push(doc?.data());
+        dispatch(getArticles(payload));
+        setState(payload);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
